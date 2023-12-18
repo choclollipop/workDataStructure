@@ -1,7 +1,14 @@
 #ifndef __DYNAMIC_ARRAY_H_
 #define __DYNAMIC_ARRAY_H_
 
-typedef int ELEMENTTYPE;
+#if 1
+
+#define ELEMENTTYPE void*
+
+#else
+
+typedef void * ELEMENTTYPE;
+#endif
 
 /* 动态数组结构体 */
 typedef struct dynamicArray
