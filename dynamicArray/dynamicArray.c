@@ -64,7 +64,7 @@ static int expendDynamicArray(dynamicArray * pArray)
     int needExpandCapacity = pArray->capacity + (pArray->capacity >> 1);
 
     /* 将原来的容量增加至增加1.5倍 */
-    pArray->data = (dynamicArray *)malloc(sizeof(ELEMENTTYPE) * needExpandCapacity);
+    pArray->data = (ELEMENTTYPE *)malloc(sizeof(ELEMENTTYPE) * needExpandCapacity);
     if(!pArray->data)
     {
         return MALLOC_ERROR;
@@ -277,6 +277,28 @@ int dynamicArrayGetCapacity(dynamicArray * pArray, int *pCapacity)
     if(pCapacity)
     {
         *pCapacity = pArray->capacity;
+    }
+
+    return ON_SUCCESS;
+}
+
+int dynamicArrayGetAppointVal(dynamicArray *pArray, int pos, ELEMENTTYPE *pVal)
+{
+    /* 判空 */
+    if(!pArray)
+    {
+        return NULL_PTR;
+    }
+
+    /* 判断位置是否合法 */
+    if(pos < 0 || pos > pArray->len)
+    {
+        return INVALID_ACCESS;
+    }
+
+    if(pVal)
+    {
+        *pVal = pArray->data[pos];
     }
 
     return ON_SUCCESS;
