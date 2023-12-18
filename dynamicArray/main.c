@@ -45,9 +45,14 @@ int main()
     }
 
     {
+        int size = 0;
+        /* 获取数组大小 */
+        dynamicArrayGetSize(&array, &size);
+
         /* 删除末尾元素 */
         dynamicArrayDeleteData(&array);
 
+        int val = 0;
         for(int idx = 0; idx < size; idx++)
         {
             dynamicArrayGetAppointVal(&array, idx, &val);
@@ -57,15 +62,76 @@ int main()
         printf("\n");
     }
 
-    /* 删除指定位置的数据 */
-    int pos = 1;
-    dynamicArrayDeleteAppointData(&array, pos);
-    for(int idx = 0; idx < size; idx++)
     {
-        dynamicArrayGetAppointVal(&array, idx, &val);
-        printf("val : %d\t", val);
+        int size = 0;
+        /* 获取数组大小 */
+        dynamicArrayGetSize(&array, &size);
+
+        /* 删除指定位置的数据 */
+        int pos = 1;
+        int val = 0;
+        dynamicArrayDeleteAppointData(&array, pos);
+        for(int idx = 0; idx < size; idx++)
+        {
+            dynamicArrayGetAppointVal(&array, idx, &val);
+            printf("val : %d\t", val);
+        }
+        printf("\n");
     }
-    printf("\n");
+
+    {
+        int size = 0;
+        
+        /* 插入数据 */
+        int idx = 0;
+        for(idx; idx <= DEFAULT_NUM; idx++)
+        {
+            dynamicArrayInsertData(&array, (void *)&idx);
+        }
+       
+        dynamicArrayGetSize(&array, &size);
+        
+        /* 打印数据 */
+        int *val = NULL;
+        for(int idx = 0; idx < size; idx++)
+        {
+            dynamicArrayGetAppointVal(&array, idx, (void *)&val);
+            printf("val : %d\t", *val);
+        }
+        printf("\n");
+
+        /* 修改指定位置的数据 */
+        int modify =5;
+        val = &modify;
+        dynamicArrayModifyAppointPosData(&array, 1, (void *)val);
+
+        val = NULL;
+        for(int idx = 0; idx < size; idx++)
+        {
+            dynamicArrayGetAppointVal(&array, idx, (void *)&val);
+            printf("val : %d\t", *val);
+        }
+        printf("\n");
+
+        /* 删除指定元素 */
+        modify = 5;
+        val = &modify;
+        dynamicArrayDeleteAppointData(&array, (void *)&val);
+
+        dynamicArrayGetSize(&array, &size);
+
+        val = NULL;
+        for(int idx = 0; idx < size; idx++)
+        {
+            dynamicArrayGetAppointVal(&array, idx, (void *)&val);
+            printf("val : %d\t", *val);
+        }
+        printf("\n");
+
+    }
+
+    dynamicArrayDestroy(&array);
+    printf("%p\n", array.data);
 
 #endif
 
@@ -126,6 +192,8 @@ int main()
     }
 
 #endif
+
+#if 0
     int idx = 0;
     for(idx; idx < DEFAULT_NUM; idx++)
     {
@@ -142,6 +210,8 @@ int main()
         dynamicArrayGetAppointVal(&array, idx, (void *)&val);
         printf("val : %d\n", *val);
     }
+#endif
+
 
     return 0;
 }

@@ -154,7 +154,7 @@ int dynamicArrayDeleteData(dynamicArray * pArray)
 
 static int shrinkDynamicCapacity(dynamicArray * pArray)
 {
-    ELEMENTTYPE * pTmp = pArray->data;
+    ELEMENTTYPE *pTmp = pArray->data;
 
     /* 缩小1.5倍即减去现有的四分之一 */
     int needShrinkCapacity = pArray->capacity - (pArray->capacity >> 2);
