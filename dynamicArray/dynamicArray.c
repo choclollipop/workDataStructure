@@ -189,7 +189,7 @@ int dynamicArrayDeleteAppointPosData(dynamicArray * pArray, int pos)
     CHECK_POS(pos);
 
     /* 动态数组缩容 */
-    if((pArray->capacity - (pArray->capacity >> 2)) < pArray->len)
+    if((pArray->capacity - (pArray->capacity >> 2)) > pArray->len)
     {
         /* 缩容 */
         shrinkDynamicCapacity(pArray);
