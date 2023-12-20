@@ -141,6 +141,12 @@ int LinkListAppointPosDel(LinkList * pList, int pos)
         return INVALID_ACCESS;
     }
 
+    int flag = 0;
+    if(pos == pList->len)
+    {
+        flag = 1;
+    }
+
     /* 从头结点开始遍历 */
     LinkNode * travel = pList->head;
 
@@ -150,6 +156,12 @@ int LinkListAppointPosDel(LinkList * pList, int pos)
     }
     LinkNode * needDelNode = travel->next;
     travel->next = needDelNode->next;
+
+    /* 删除了表尾结点的时候需要移动尾指针 */
+    if(flag)
+    {
+        pList->tail = travel;
+    }
 
     /* 释放内存 */
     if(needDelNode)
