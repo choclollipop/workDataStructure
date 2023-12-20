@@ -30,8 +30,9 @@ int LinkListInit(LinkList ** pList)
     }
     memset(list->head, 0, sizeof(LinkNode) * 1);
 
-    /* 初始化链表的长度 */
+    /* 初始化链表的长度和尾指针 */
     list->len = 0;
+    list->tail = list->head;
 
     /* 初始化头节点 */
     list->head->data = 0;
@@ -83,15 +84,28 @@ int LinkListAppointPosInsert(LinkList * pList,int pos, ELEMENTTYPE val)
     /* 从头结点开始遍历 */
     LinkNode * travel = pList->head;
 
-    while(pos)
+    /* 改变尾指针的情况 */
+    int flag = 0;
+    if(pos == pList->len)
     {
-        travel = travel->next;
-        pos--;
+        travel = pList->tail;
+        flag = 1;
     }
-
+    else
+    {
+        while(pos)
+        {
+            travel = travel->next;
+            pos--;
+        }
+    }
     /* 执行插入操作 */
     newNode = travel->next;
     travel->next = newNode;
+    if(flag)
+    {
+        pList->tail = newNode;
+    }
 
     /* 更新链表数据 */
     pList->len++;
@@ -153,8 +167,10 @@ int LinkListForeach(LinkList * pList)
         return NULL_PTR;
     }
 
+    /* 从头结点开始遍历 */
     LinkNode * travel = pList->head;
 
+    /* 结束条件：下一个结点的指针域为空，即来到了表尾结点 */
     while(travel->next != NULL)
     {
         travel = travel->next;

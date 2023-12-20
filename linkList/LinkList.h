@@ -14,6 +14,7 @@ typedef struct LinkNode
 typedef struct LinkList
 {
     LinkNode * head;
+    LinkNode * tail;
     int len;
 }LinkList;
 
