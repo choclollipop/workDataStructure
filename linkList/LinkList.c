@@ -1,6 +1,7 @@
 #include "LinkList.h"
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 /* 状态码 */
 enum STATUS_CODE
@@ -145,8 +146,21 @@ int LinkListDestory(LinkList * pList)
 }
 
 /* 链表的遍历 */
-int LinkListForeach()
+int LinkListForeach(LinkList * pList)
 {
+    if(!pList)
+    {
+        return NULL_PTR;
+    }
 
+    LinkNode * travel = pList->head;
+
+    while(travel->next != NULL)
+    {
+        travel = travel->next;
+        printf("trave->data:%d\n", travel->data);
+    }
+
+    return ON_SUCCESS;
 }
 

@@ -48,6 +48,6 @@ int LinkListGetLen(LinkList * pList, int * pSize);
 int LinkListDestory(LinkList * pList);
 
 /* 链表的遍历 */
-int LinkListForeach();
+int LinkListForeach(LinkList * pList);
 
 #endif //__LINK_LIST_H_
