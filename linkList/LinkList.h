@@ -47,4 +47,7 @@ int LinkListGetLen(LinkList * pList, int * pSize);
 /* 销毁链表 */
 int LinkListDestory(LinkList * pList);
 
+/* 链表的遍历 */
+int LinkListForeach();
+
 #endif //__LINK_LIST_H_
