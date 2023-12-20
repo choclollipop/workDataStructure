@@ -7,10 +7,13 @@
 enum STATUS_CODE
 {
     ON_SUCCESS,
-    NULL_PTR,
+    NULL_PTR = -5,
     MALLOC_ERROR,
     INVALID_ACCESS,
+    NOT_FIND,
 };
+
+static int LinkListAccordAppointValGetPos(LinkList * pList, ELEMENTTYPE val, int * pPos);
 
 /* 链表初始化 */
 int LinkListInit(LinkList ** pList)
@@ -160,10 +163,43 @@ int LinkListAppointPosDel(LinkList * pList, int pos)
     pList->len--;
 }
 
+/* 根据指定元素得到元素在链表中所在位置 */
+static int LinkListAccordAppointValGetPos(LinkList * pList, ELEMENTTYPE val, int * pPos)
+{
+    /* 从头结点开始遍历 */
+    LinkNode * travelNode = pList->head;
+
+    int pos = 0;
+
+    while(travelNode->next)
+    {
+        if(travelNode->next->data == val)
+        {
+            pos++;
+            *pPos = pos;
+            return pos;
+        }
+        travelNode = travelNode->next;
+        pos++;
+    }
+
+    *pPos = NOT_FIND;
+
+    return NOT_FIND;
+}
+
 /* 链表删除指定元素 */
 int LinkListDelAppointVal(LinkList * pList, ELEMENTTYPE val)
 {
+    int pos = 0;
+    int size = 0;
 
+    while(pos != NOT_FIND)
+    {
+        LinkListAppointPosDel(pList, LinkListAccordAppointValGetPos(pList, val, &pos));
+    }
+
+    return ON_SUCCESS;
 }
 
 /* 获取链表长度 */
