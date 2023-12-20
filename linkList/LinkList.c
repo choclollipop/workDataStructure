@@ -2,10 +2,43 @@
 #include <stdlib.h>
 #include <string.h>
 
+/* 状态码 */
+enum STATUS_CODE
+{
+    ON_SUCCESS,
+    NULL_PTR,
+    MALLOC_ERROR,
+    INVALID_ACCESS,
+};
+
 /* 链表初始化 */
 int LinkListInit(LinkList ** pList)
 {
+    LinkList * list = (LinkList *)malloc(sizeof(LinkList) * 1);
+    if(!list)
+    {
+        return MALLOC_ERROR;
+    }
+    /* 清空脏数据 */
+    memset(list, 0, sizeof(LinkList) * 1);
 
+    list->head = (LinkNode *)malloc(sizeof(LinkNode) * 1);
+    if(!list->head)
+    {
+        return MALLOC_ERROR;
+    }
+    memset(list->head, 0, sizeof(LinkNode) * 1);
+
+    /* 初始化链表的长度 */
+    list->len = 0;
+
+    /* 初始化头节点 */
+    list->head->data = 0;
+    list->head->next = NULL;
+
+    *pList = list;
+
+    return ON_SUCCESS;
 }
 
 /* 链表头插 */
