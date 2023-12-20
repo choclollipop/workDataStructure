@@ -103,7 +103,7 @@ int LinkListAppointPosInsert(LinkList * pList,int pos, ELEMENTTYPE val)
         }
     }
     /* 执行插入操作 */
-    newNode = travel->next;
+    newNode->next = travel->next;
     travel->next = newNode;
     if(flag)
     {
@@ -236,7 +236,7 @@ int LinkListDestory(LinkList * pList)
 {
     /* 使用头删销毁链表 */
     int size = 0;
-    while(LinkListGetLen(pList, size))
+    while(LinkListGetLen(pList, &size))
     {
         LinkListHeadDel(pList);
     }
