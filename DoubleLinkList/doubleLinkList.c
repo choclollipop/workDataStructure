@@ -7,13 +7,14 @@
 enum STATUS_CODE
 {
     ON_SUCCESS,
-    NULL_PTR = -5,
+    NULL_PTR,
     MALLOC_ERROR,
     INVALID_ACCESS,
     NOT_FIND,
 };
 
 static int DoubleLinkListAccordAppointValGetPos(DoubleLinkList * pList, ELEMENTTYPE val, int * pPos);
+static DoubleLinkNode * createDoubleLinkNode(ELEMENTTYPE val);
 
 /* 链表初始化 */
 int DoubleLinkListInit(DoubleLinkList ** pList)
@@ -40,6 +41,7 @@ int DoubleLinkListInit(DoubleLinkList ** pList)
     /* 初始化头节点 */
     list->head->data = 0;
     list->head->next = NULL;
+    list->head->prev = NULL;
 
     *pList = list;
 
@@ -58,6 +60,25 @@ int DoubleLinkListTailInsert(DoubleLinkList * pList, ELEMENTTYPE val)
     return DoubleLinkListAppointPosInsert(pList, pList->len, val);
 }
 
+/* 创建新节点封装成函数 */
+static DoubleLinkNode * createDoubleLinkNode(ELEMENTTYPE val)
+{
+    DoubleLinkNode * newNode = (DoubleLinkNode *)malloc(sizeof(DoubleLinkNode) * 1);
+    if(!newNode)
+    {
+        return NULL;
+    }
+    memset(newNode, 0, sizeof(DoubleLinkNode) * 1);
+    newNode->data = 0;
+    newNode->next = NULL;
+    newNode->prev = NULL;
+
+    /* 赋值 */
+    newNode->data = val;
+
+    return newNode;
+}
+
 /* 链表指定位置插入 */
 int DoubleLinkListAppointPosInsert(DoubleLinkList * pList,int pos, ELEMENTTYPE val)
 {
@@ -71,18 +92,12 @@ int DoubleLinkListAppointPosInsert(DoubleLinkList * pList,int pos, ELEMENTTYPE v
         return INVALID_ACCESS;
     }
 
-    /* 创建新节点 */
-    DoubleLinkNode * newNode = (DoubleLinkNode *)malloc(sizeof(DoubleLinkNode) * 1);
+    /* 创建新节点封装成函数 */
+    DoubleLinkNode * newNode = createDoubleLinkNode(val);
     if(!newNode)
     {
         return MALLOC_ERROR;
     }
-    memset(newNode, 0, sizeof(DoubleLinkNode) * 1);
-    newNode->data = 0;
-    newNode->next = NULL;
-
-    /* 赋值 */
-    newNode->data = val;
 
     /* 从头结点开始遍历 */
     DoubleLinkNode * travel = pList->head;
@@ -104,7 +119,10 @@ int DoubleLinkListAppointPosInsert(DoubleLinkList * pList,int pos, ELEMENTTYPE v
     }
     /* 执行插入操作 */
     newNode->next = travel->next;
+    newNode->prev = travel;
+    travel->next->prev = newNode;
     travel->next = newNode;
+
     if(flag)
     {
         pList->tail = newNode;
