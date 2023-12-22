@@ -160,21 +160,29 @@ int DoubleLinkListAppointPosDel(DoubleLinkList * pList, int pos)
         return INVALID_ACCESS;
     }
 
+    /* 从头结点开始遍历 */
+    DoubleLinkNode * travel = pList->head;
+    DoubleLinkNode * needDelNode = NULL;
+
     int flag = 0;
     if(pos == pList->len)
     {
         flag = 1;
+        travel = pList->tail->prev;
+        needDelNode = travel->next;
     }
-
-    /* 从头结点开始遍历 */
-    DoubleLinkNode * travel = pList->head;
-
-    while(--pos)
+    else
     {
-        travel = travel->next;
+        while(--pos)
+        {
+            travel = travel->next;
+        }
+        needDelNode = travel->next;
+        needDelNode->next->prev = travel;
     }
-    DoubleLinkNode * needDelNode = travel->next;
+
     travel->next = needDelNode->next;
+    
 
     /* 删除了表尾结点的时候需要移动尾指针 */
     if(flag)
@@ -295,6 +303,29 @@ int DoubleLinkListForeach(DoubleLinkList * pList, int (*printFunc)(ELEMENTTYPE))
         /* 包装器即回调函数 */
         printFunc(travel->data);
 #endif
+    }
+
+    return ON_SUCCESS;
+}
+
+/* 链表逆序打印 */
+int DoubleLinkListReverseForeach(DoubleLinkList * pList, int (*printFunc)(ELEMENTTYPE))
+{
+    if(!pList)
+    {
+        return NULL_PTR;
+    }
+
+    /* 从尾节点开始遍历 */
+    DoubleLinkNode * travel = pList->tail;
+
+    /* 结束条件：头结点的指针域为空，即来到了表尾结点 */
+    while(travel->prev)
+    {
+        /* 包装器即回调函数 */
+        printFunc(travel->data);
+        travel = travel->prev;
+
     }
 
     return ON_SUCCESS;

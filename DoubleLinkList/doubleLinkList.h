@@ -52,4 +52,7 @@ int DoubleLinkListDestory(DoubleLinkList * pList);
 /* 链表的遍历 */
 int DoubleLinkListForeach(DoubleLinkList * pList, int (*printFunc)(ELEMENTTYPE));
 
+/* 链表的逆序打印 */
+int DoubleLinkListReverseForeach(DoubleLinkList * pList, int (*printFunc)(ELEMENTTYPE));
+
 #endif //__DOUBLELINK_LIST_H_

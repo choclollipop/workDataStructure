@@ -67,8 +67,13 @@ int main()
     DoubleLinkListGetLen(list, &len);
     printf("len : %d\n", len);
 
+#if 1
     /* 测试链表遍历 */
+    DoubleLinkListReverseForeach(list, printfStruct);
+#else
     DoubleLinkListForeach(list, printfStruct);
+
+#endif
 
     return 0;
 }
