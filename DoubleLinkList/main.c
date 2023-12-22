@@ -19,26 +19,26 @@ int printfStruct(void *arg)
 
 int main()
 {
-    LinkList * list = NULL;
+    DoubleLinkList * list = NULL;
     
     /* 测试链表初始化 */
-    LinkListInit(&list);
+    DoubleLinkListInit(&list);
     printf("list.len : %d\n", list->len);
 
 #if 0
     /* 测试头插 */
     for(int idx = 0; idx < BUFFER_SIZE; idx++)
     {
-        LinkListHeadInsert(list, idx);
+        DoubleLinkListHeadInsert(list, idx);
     }
 
     /* 获取链表长度 */
     int len = 0;
-    LinkListGetLen(list, &len);
+    DoubleLinkListGetLen(list, &len);
     printf("len : %d\n", len);
 
     /* 测试链表遍历 */
-    LinkListForeach(list);
+    DoubleLinkListForeach(list);
 #endif
 
     stuInfo stu1,stu2,stu3;
@@ -59,16 +59,16 @@ int main()
 
     for(int idx = 0; idx < BUFFER_SIZE; idx++)
     {
-        LinkListHeadInsert(list, (void*)&buffer[idx]);
+        DoubleLinkListHeadInsert(list, (void*)&buffer[idx]);
     }
 
     /* 获取链表长度 */
     int len = 0;
-    LinkListGetLen(list, &len);
+    DoubleLinkListGetLen(list, &len);
     printf("len : %d\n", len);
 
     /* 测试链表遍历 */
-    LinkListForeach(list, printfStruct);
+    DoubleLinkListForeach(list, printfStruct);
 
     return 0;
 }
