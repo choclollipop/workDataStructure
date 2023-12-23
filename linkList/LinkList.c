@@ -173,6 +173,8 @@ int LinkListAppointPosDel(LinkList * pList, int pos)
 
     /* 更新链表信息 */
     pList->len--;
+
+    return ON_SUCCESS;
 }
 
 /* 根据指定元素得到元素在链表中所在位置 */
@@ -242,7 +244,7 @@ int LinkListDestory(LinkList * pList)
     }
 
     /* 删除头节点，并将头指针和尾指针都置空 */
-    if(!pList->head)
+    if(pList->head)
     {
         free(pList->head);
         pList->head = NULL;
@@ -253,7 +255,7 @@ int LinkListDestory(LinkList * pList)
 }
 
 /* 链表的遍历 */
-int LinkListForeach(LinkList * pList)
+int LinkListForeach(LinkList * pList, int (*printFunc)(ELEMENTTYPE))
 {
     if(!pList)
     {
@@ -267,7 +269,13 @@ int LinkListForeach(LinkList * pList)
     while(travel->next != NULL)
     {
         travel = travel->next;
+#if 0
+        travel = travel->next;
         printf("trave->data:%d\n", travel->data);
+#else
+        /* 包装器即回调函数 */
+        printFunc(travel->data);
+#endif
     }
 
     return ON_SUCCESS;
