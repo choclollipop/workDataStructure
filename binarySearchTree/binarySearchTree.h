@@ -20,10 +20,12 @@ typedef struct binarySearchTree
     int size;
     /* 钩子函数/比较器 */
     int (*compareFunc)(ELELMENTTYPE val1, ELELMENTTYPE val2);
+    /* 钩子函数/包装器（实现自定义打印） */
+    int (*printFunc)(ELELMENTTYPE val);
 }binarySearchTree;
 
 /* 二叉搜索树的初始化 */
-int binarySearchTreeInit(binarySearchTree ** pBstree, int (*compareFunc)(ELELMENTTYPE val1, ELELMENTTYPE val2));
+int binarySearchTreeInit(binarySearchTree ** pBstree, int (*compareFunc)(ELELMENTTYPE val1, ELELMENTTYPE val2), int (*printFunc)(ELELMENTTYPE val));
 
 /* 二叉搜索树的插入 */
 int binarySearchTreeInsert(binarySearchTree * pBstree, ELELMENTTYPE val);
