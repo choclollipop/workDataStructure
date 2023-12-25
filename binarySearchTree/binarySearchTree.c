@@ -14,6 +14,8 @@ enum STATUS_CODE
 
 /* 静态函数前置声明 */
 static BSTreeNode * createNewBSTreeNode(ELELMENTTYPE val, BSTreeNode * parent);
+/* 根据指定的值获取二叉搜索树的结点 */
+static BSTreeNode * baseAppointValGetBSTreeNode(binarySearchTree * pBstree, ELELMENTTYPE val);
 
 /* 创建结点 */
 static BSTreeNode * createNewBSTreeNode(ELELMENTTYPE val, BSTreeNode * parent)
@@ -135,27 +137,45 @@ int binarySearchTreeInsert(binarySearchTree * pBstree, ELELMENTTYPE val, int (*c
     return 0;
 }
 
+/* 二叉搜索树根据指定的值获取结点*/
+static BSTreeNode * baseAppointValGetBSTreeNode(binarySearchTree * pBstree, ELELMENTTYPE val, int (*compareFunc)(ELELMENTTYPE val1, ELELMENTTYPE val2))
+{
+    BSTreeNode * travelNode = pBstree->root;
+
+    while(travelNode)
+    {
+        
+    }
+}
+
+/* 二叉搜索树是否包含指定元素 */
+int binarySearchTreeIsContainAppointVal(binarySearchTree * pBstree, ELELMENTTYPE val)
+{
+
+    return 0;
+}
+
 /* 二叉搜索树的前序遍历 */
-int binarySearchTreePreOrderTravel()
+int binarySearchTreePreOrderTravel(binarySearchTree * pBstree)
 {
 
     return 0;
 }
 
 /* 二叉搜索树的中序遍历 */
-int binarySearchTreeInOrderTravel()
+int binarySearchTreeInOrderTravel(binarySearchTree * pBstree)
 {
     return 0;
 }
 
 /* 二叉搜索树的后序遍历*/
-int binarySearchTreePostOrderTravel()
+int binarySearchTreePostOrderTravel(binarySearchTree * pBstree)
 {
     return 0;
 }
 
 /* 二叉搜索树的层序遍历 */
-int binarySearchTreeLevelOrderTravel()
+int binarySearchTreeLevelOrderTravel(binarySearchTree * pBstree)
 {
     return 0;
 }
