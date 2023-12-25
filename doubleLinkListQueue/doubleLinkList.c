@@ -331,3 +331,17 @@ int DoubleLinkListReverseForeach(DoubleLinkList * pList, int (*printFunc)(ELEMEN
     return ON_SUCCESS;
 }
 
+/* 获取链表表头的值 */
+int DoubleLinkListGetHeadVal(DoubleLinkList * pList, ELEMENTTYPE * pVal)
+{
+    return DoubleLinkListGetAppointPosVal(pList, 0, pVal);
+}
+
+/* 获取链表表尾的值 */
+int DoubleLinkListGetTailVal(DoubleLinkList * pList, ELEMENTTYPE * pVal)
+{
+    return DoubleLinkListGetAppointPosVal(pList, pList->len, pVal);
+}
+
+/* 获取链表指定位置的值 */
+int DoubleLinkListGetAppointPosVal(DoubleLinkList * pList, int pos, ELEMENTTYPE * pVal);

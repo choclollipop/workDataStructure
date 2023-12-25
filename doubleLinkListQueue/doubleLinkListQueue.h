@@ -1,12 +1,15 @@
 #ifndef __DOUBLELINKLIST_QUEUE_H_
 #define __DOUBLELINKLIST_QUEUE_H_
 
+#include "common.h"
+
+typedef DoubleLinkList doubleLinkListQueue;
 
 /* 队列初始化 */
-int doubleLinkListQueueInit();
+int doubleLinkListQueueInit(doubleLinkListQueue * pQueue);
 
 /* 入队 */
-int doubleLinkListQueuePush();
+int doubleLinkListQueuePush(doubleLinkListQueue * pQueue, ELEMENTTYPE val);
 
 /* 出队 */
 int doubleLinkListQueuePop();
