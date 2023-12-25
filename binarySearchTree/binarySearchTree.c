@@ -1,6 +1,8 @@
 #include "binarySearchTree.h"
+#include "doubleLinkListQueue.h"
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 /* 状态码 */
 enum STATUS_CODE
@@ -168,9 +170,7 @@ static BSTreeNode * baseAppointValGetBSTreeNode(binarySearchTree * pBstree, ELEL
 /* 二叉搜索树是否包含指定元素 */
 int binarySearchTreeIsContainAppointVal(binarySearchTree * pBstree, ELELMENTTYPE val)
 {
-    baseAppointValGetBSTreeNode(pBstree, val);
-
-    return 0;
+    return baseAppointValGetBSTreeNode(pBstree, val) == NULL ? 0 : 1;
 }
 
 /* 二叉搜索树的前序遍历 */
@@ -195,5 +195,42 @@ int binarySearchTreePostOrderTravel(binarySearchTree * pBstree)
 /* 二叉搜索树的层序遍历 */
 int binarySearchTreeLevelOrderTravel(binarySearchTree * pBstree)
 {
-    return 0;
+    if(!pBstree)
+    {
+        return NULL_PTR;
+    }
+
+    /* 赋空值，避免野指针 */
+    doubleLinkListQueue * queue = NULL;
+
+    doubleLinkListQueueInit(&queue);
+
+    /* 根节点入队 */
+    doubleLinkListQueuePush(queue, pBstree->root);
+    
+    BSTreeNode * val = NULL;
+    while(!doubleLinkListQueueIsEmpty(queue))
+    {
+        /* 读取对头元素 */
+        doubleLinkListQueueTop(queue, (void *)&val);
+        printf("data : %d\n", val->data);
+
+        /* 出队，队头元素变化，取出的是结点 */
+        doubleLinkListQueuePop(queue);
+
+        /* 左右子树入队 */
+        if(val->left)
+        {
+            doubleLinkListQueuePush(queue, val->left);
+        }
+        else if(val->right)
+        {
+            doubleLinkListQueuePush(queue, val->right);
+        }
+    }
+
+    /* 释放队列 */
+    doubleLinkListQueueDestroy(queue);
+
+    return ON_SUCCESS;
 }
