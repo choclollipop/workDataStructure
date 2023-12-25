@@ -1,4 +1,5 @@
 #include "dynamicArrayStack.h"
+#include "dynamicArray.h"
 
 #define DEFAULT_SIZE    10
 
@@ -17,7 +18,7 @@ int dynamicArrayStackPush(dynamicArrayStack * pStack, ELEMENTYP val)
 /* 查看栈顶元素 */
 int dynamicArrayStackTop(dynamicArrayStack * pStack, ELEMENTYP * pVal)
 {
-    return dynamicArraySearch(pStack, pStack->len, pVal);
+    return dynamicArraySearch(pStack, pStack->len - 1, pVal);
 }
 
 /* 出栈 */

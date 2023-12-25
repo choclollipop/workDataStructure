@@ -1,7 +1,7 @@
 #ifndef __DYNAMIC_ARRAY_STACK_H_
 #define __DYNAMIC_ARRAY_STACK_H_
 
-#include "dynamicArray.h"
+#include "common.h"
 
 typedef dynamicArray dynamicArrayStack;
 

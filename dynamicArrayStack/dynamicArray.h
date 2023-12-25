@@ -1,14 +1,7 @@
 #ifndef __DYNAMIC_ARRAY_H_
 #define __DYNAMIC_ARRAY_H_
 
-#define ELEMENTYP void*
-
-typedef struct dynamicArray
-{
-    ELEMENTYP *data;
-    int len;
-    int capacity;
-}dynamicArray;
+#include "common.h"
 
 /* 动态数组初始化 */
 int dynamicArrayInit(dynamicArray * pArray, int capacity);
