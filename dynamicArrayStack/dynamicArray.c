@@ -39,7 +39,7 @@ int dynamicArrayInit(dynamicArray * pArray, int capacity)
     CHECK_PTR(pArray);
 
     /* 避免非法数值 */
-    if(capacity < 0)
+    if(capacity <= 0)
     {
         capacity = DEFAULT_SIZE;
     }
