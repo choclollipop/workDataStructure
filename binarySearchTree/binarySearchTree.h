@@ -27,4 +27,16 @@ int binarySearchTreeInit(binarySearchTree ** pBstree);
 /* 二叉搜索树的插入 */
 int binarySearchTreeInsert(binarySearchTree * pBstree, ELELMENTTYPE val, int (*compareFunc)(ELELMENTTYPE val1, ELELMENTTYPE val2));
 
+/* 二叉搜索树的前序遍历 */
+int binarySearchTreePreOrderTravel();
+
+/* 二叉搜索树的中序遍历 */
+int binarySearchTreeInOrderTravel();
+
+/* 二叉搜索树的后序遍历*/
+int binarySearchTreePostOrderTravel();
+
+/* 二叉搜索树的层序遍历 */
+int binarySearchTreeLevelOrderTravel();
+
 #endif //__BINARY_SEARCHTREE_H_

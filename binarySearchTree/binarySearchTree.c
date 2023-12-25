@@ -55,7 +55,7 @@ int binarySearchTreeInit(binarySearchTree ** pBstree)
     bstree->size = 0;
 
     /* 给根节点分配空间 */
-    bstree->root = createNewBSTreeNode(0);
+    bstree->root = createNewBSTreeNode(0, NULL);
     if(!bstree->root)
     {
         return MALLOC_ERROR;
@@ -132,5 +132,30 @@ int binarySearchTreeInsert(binarySearchTree * pBstree, ELELMENTTYPE val, int (*c
     /* 更新树的结点大小 */
     pBstree->size++;
 
+    return 0;
+}
+
+/* 二叉搜索树的前序遍历 */
+int binarySearchTreePreOrderTravel()
+{
+
+    return 0;
+}
+
+/* 二叉搜索树的中序遍历 */
+int binarySearchTreeInOrderTravel()
+{
+    return 0;
+}
+
+/* 二叉搜索树的后序遍历*/
+int binarySearchTreePostOrderTravel()
+{
+    return 0;
+}
+
+/* 二叉搜索树的层序遍历 */
+int binarySearchTreeLevelOrderTravel()
+{
     return 0;
 }
