@@ -78,46 +78,27 @@ static int binarySearchTreeNodeIsLeaf(BSTreeNode *node)
     return node->left == NULL && node->right == NULL;
 }
 
-/* 获取当前结点的中序前驱结点 todo...*/
+/* 获取当前结点的中序前驱结点 */
 static int bstreeNodePreDecessor(BSTreeNode * node)
 {
     BSTreeNode * travelNode = node;
-    /* 度为2 */
-    if(binarySearchTreeHasTwochildrens(node))
+    /* 指定结点有左子树 */
+    if(travelNode->left)
     {
-        BSTreeNode * travelNode = node->left;
-
+        travelNode = travelNode->left;
         while(travelNode->right)
         {
             travelNode = travelNode->right;
         }
-        return travelNode;
+        return NULL;
     }
 
-    /* 度为1 */
-    if(binarySearchTreeHasOnechildren(node))
+    /* 指定结点没有左子树 */
+    while(travelNode->parent != NULL && travelNode == travelNode->parent->left)
     {
-        if(node->left)
-        {
-            travelNode = node->left;
-            while (travelNode->right)
-            {
-                travelNode = travelNode->right;
-            }
-            return travelNode;
-        }
-        
+        travelNode = travelNode->parent;
     }
-
-    /* 度为0 */
-    if(binarySearchTreeNodeIsLeaf(node))
-    {
-        if(node == node->parent->right)
-        {
-            return node->parent;
-        }
-
-    }
+    return travelNode->parent;
 
     return NULL;
 }
@@ -401,6 +382,7 @@ int binarySearchTreeDestroy(binarySearchTree * pBstree)
 
     doubleLinkListQueue * queue = NULL;
     doubleLinkListQueueInit(&queue);
+    doubleLinkListQueuePush(queue, pBstree->root);
 
     BSTreeNode * val = NULL;
     while(!doubleLinkListQueueIsEmpty(queue))
