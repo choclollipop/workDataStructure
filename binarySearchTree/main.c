@@ -54,13 +54,19 @@ int main()
     binarySearchTreeGetHeight(tree, &height);
     printf("height : %d\n", height);
 
-    /* 测试前中后序打印 */
+    /* 测试删除指定元素 */
+    binarySearchTreeDelete(tree, (void *)&buffer[3]);
+    binarySearchTreeDelete(tree, (void *)&buffer[2]);
+
+    /* 测试中序打印 */
     binarySearchTreeInOrderTravel(tree);
     printf("\n");
 
+    /* 测试后序遍历 */
     binarySearchTreePostOrderTravel(tree);
     printf("\n");
 
+    /* 测试前序遍历 */
     binarySearchTreePreOrderTravel(tree);
     printf("\n");
 

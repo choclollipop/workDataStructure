@@ -92,7 +92,7 @@ static BSTreeNode * bstreeNodePreDecessor(BSTreeNode * node)
         {
             travelNode = travelNode->right;
         }
-        return NULL;
+        return travelNode;
     }
 
     /* 指定结点没有左子树 */
@@ -279,13 +279,16 @@ static int preOrderTravel(binarySearchTree * pBstree , BSTreeNode * node)
 /* 中序遍历 */
 static int inOrderTravel(binarySearchTree * pBstree , BSTreeNode * node)
 {
-    while(node == NULL)
+    if(node)
     {
-        return 0;
+        inOrderTravel(pBstree, node->left);
+        pBstree->printFunc(node->data);
+        inOrderTravel(pBstree, node->right);
     }
-    inOrderTravel(pBstree, node->left);
-    pBstree->printFunc(node->data);
-    inOrderTravel(pBstree, node->right);
+    else
+    {
+        return NULL_PTR;
+    } 
 }
 
 /* 后序遍历 */
@@ -323,7 +326,7 @@ int binarySearchTreePostOrderTravel(binarySearchTree * pBstree)
     return 0;
 }
 
-/* 二叉搜索树的层序遍历并获取最后对应结点 */
+/* 二叉搜索树的层序遍历 */
 int binarySearchTreeLevelOrderTravel(binarySearchTree * pBstree)
 {
     if(!pBstree)
@@ -518,6 +521,19 @@ static int binarySearchTreeDeleteNode(binarySearchTree * pBstree, BSTreeNode * n
             /* 根节点 */
             pBstree->root = child;
         }
+    }
+    else
+    {
+        if(delNode == delNode->parent->left)
+        {
+            delNode->parent->left = NULL;
+            
+        }
+        else if(delNode == delNode->parent->right)
+        {
+            delNode->parent->right = NULL;
+        }
+        delNode->parent = NULL;
     }
 
     /* 释放结点 */
