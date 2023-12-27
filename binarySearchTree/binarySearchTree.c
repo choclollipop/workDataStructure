@@ -78,7 +78,7 @@ static int binarySearchTreeNodeIsLeaf(BSTreeNode *node)
     return node->left == NULL && node->right == NULL;
 }
 
-/* 获取当前结点的前驱结点 */
+/* 获取当前结点的中序前驱结点 todo...*/
 static int bstreeNodePreDecessor(BSTreeNode * node)
 {
     BSTreeNode * travelNode = node;
@@ -95,11 +95,34 @@ static int bstreeNodePreDecessor(BSTreeNode * node)
     }
 
     /* 度为1 */
+    if(binarySearchTreeHasOnechildren(node))
+    {
+        if(node->left)
+        {
+            travelNode = node->left;
+            while (travelNode->right)
+            {
+                travelNode = travelNode->right;
+            }
+            return travelNode;
+        }
+        
+    }
 
     /* 度为0 */
+    if(binarySearchTreeNodeIsLeaf(node))
+    {
+        if(node == node->parent->right)
+        {
+            return node->parent;
+        }
+
+    }
+
+    return NULL;
 }
 
-/* 获取当前结点的后继节点 */
+/* 获取当前结点的后继节点 todo...*/
 static int bstreeNodeSuccessor(BSTreeNode * node)
 {
 
@@ -368,3 +391,48 @@ int binarySearchTreeGetHeight(binarySearchTree * pBstree, int * height)
     return 0;
 }
 
+/* 二叉搜索树的销毁 */
+int binarySearchTreeDestroy(binarySearchTree * pBstree)
+{
+    if(!pBstree)
+    {
+        return NULL_PTR;
+    }
+
+    doubleLinkListQueue * queue = NULL;
+    doubleLinkListQueueInit(&queue);
+
+    BSTreeNode * val = NULL;
+    while(!doubleLinkListQueueIsEmpty(queue))
+    {
+        doubleLinkListQueueTop(queue, (void **)&val);
+        doubleLinkListQueuePop(queue);
+
+        if(val->left)
+        {
+            doubleLinkListQueuePush(queue, val->left);
+        }
+        else if (val->right)
+        {
+            doubleLinkListQueuePush(queue, val->right);
+        }
+
+        if(val)
+        {
+            free(val);
+            val = NULL;
+        }
+    }
+
+    /* 销毁队列 */
+    doubleLinkListQueueDestroy(queue);
+
+    /* 释放树 */
+    if(pBstree)
+    {
+        free(pBstree);
+        pBstree->root = NULL;
+    }
+
+    return ON_SUCCESS;
+}

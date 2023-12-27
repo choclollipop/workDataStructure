@@ -51,4 +51,7 @@ int binarySearchTreeGetHeight(binarySearchTree * pBstree, int * height);
 /* 二叉搜索树删除指定的值 */
 int binarySearchTreeDelete(binarySearchTree * pBstree, ELELMENTTYPE val);
 
+/* 二叉搜索树的销毁 */
+int binarySearchTreeDestroy(binarySearchTree * pBstree);
+
 #endif //__BINARY_SEARCHTREE_H_
