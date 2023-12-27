@@ -1,8 +1,47 @@
 #include <stdio.h>
 #include "binarySearchTree.h"
 
+#define BUFFER_SIZE    5
+
+int printFunc(void * val)
+{
+    int * tmp = (int *)val;
+    printf("data : %d\n", *tmp);
+
+    return 0;
+}
+
+int compare(void * val1, void * val2)
+{
+    int tmp1 = *(int *)val1;
+    int tmp2 = *(int *)val2;
+
+    return tmp1 - tmp2;
+}
+
 int main()
 {
+    binarySearchTree * tree = NULL;
+    int buffer[BUFFER_SIZE] = {56, 28, 75, 73, 77};
+
+    /* 测试初始化函数 */
+    binarySearchTreeInit(&tree, compare, printFunc);
+
+    /* 测试插入函数 */
+    for (int idx = 0; idx < BUFFER_SIZE; idx++)
+    {
+        binarySearchTreeInsert(tree, (void *)&buffer[idx]);
+    }
+
+    /* 测试获取节点个数 */
+    int size = 0;
+    binarySearchTreeGetNodeSize(tree, &size);
+    printf("size : %d\n", size);
+
+    /* 测试获取二叉搜索树的高度 */
+    int height = 0;
+    binarySearchTreeGetHeight(tree, &height);
+    printf("height : %d\n", height);
 
     return 0;
 }

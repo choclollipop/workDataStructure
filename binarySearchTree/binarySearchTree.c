@@ -168,33 +168,27 @@ int binarySearchTreeInsert(binarySearchTree * pBstree, ELELMENTTYPE val)
         return NULL_PTR;
     }
 
+    /* 从根结点开始遍历 */
+    BSTreeNode * travelNode = pBstree->root;
+    /* 根节点为空插入根节点中 */
     if(pBstree->size == 0)
     {
-        /* 更新树的结点 */
+        travelNode->data = val;
         pBstree->size++;
-        pBstree->root->data = val;
-        
+
         return ON_SUCCESS;
     }
-    
-    /* 从根节点开始遍历 */
-    BSTreeNode * travelNode = pBstree->root;
 
-    /* 指向父节点的父指针 */
-    BSTreeNode * parentNode = pBstree->root;
-
-    /* 标记传入的参数 */
+    /* 比较插入的值与结点大小 */
     int cmp = 0;
 
+    BSTreeNode * parentNode = NULL;
     while(travelNode != NULL)
     {
-        /* 标记父节点 */
         parentNode = travelNode;
 
         cmp = pBstree->compareFunc(val, travelNode->data);
 
-        /* 比较插入的结点与各个结点的大小关系 */
-        /* cmp小于0，则放在左子树；大于0，则放在右子树 */
         if(cmp < 0)
         {
             travelNode = travelNode->left;
@@ -205,27 +199,30 @@ int binarySearchTreeInsert(binarySearchTree * pBstree, ELELMENTTYPE val)
         }
         else
         {
-            /* 如果插入结点与遍历到的结点相同，直接返回 */
+            /* 相同时不做插入操作直接返回 */
             return ON_SUCCESS;
         }
     }
 
-    /* 给新插入的结点分配空间 */
-    BSTreeNode * newBstNode = createNewBSTreeNode(val, parentNode);
+    BSTreeNode * newNode = createNewBSTreeNode(val, parentNode);
+    if(!newNode)
+    {
+        return MALLOC_ERROR;
+    }
 
     if(cmp < 0)
     {
-        parentNode->left = newBstNode;
+        parentNode->left = newNode;
     }
     else
     {
-        parentNode->right = newBstNode;
+        parentNode->right = newNode;
     }
 
-    /* 更新树的结点大小 */
+    /* 更新树的结点个数 */
     pBstree->size++;
 
-    return 0;
+    return ON_SUCCESS;
 }
 
 /* 二叉搜索树根据指定的值获取结点*/
@@ -353,7 +350,7 @@ int binarySearchTreeLevelOrderTravel(binarySearchTree * pBstree, BSTreeNode ** n
         {
             doubleLinkListQueuePush(queue, val->left);
         }
-        else if(val->right)
+        if(val->right)
         {
             doubleLinkListQueuePush(queue, val->right);
         }
@@ -367,26 +364,72 @@ int binarySearchTreeLevelOrderTravel(binarySearchTree * pBstree, BSTreeNode ** n
     return ON_SUCCESS;
 }
 
+/* 获取二叉搜索树的结点个数 */
+int binarySearchTreeGetNodeSize(binarySearchTree * pBstree, int * pSize)
+{
+    if(!pBstree)
+    {
+        return NULL_PTR;
+    }
+
+    if(pSize)
+    {
+        *pSize = pBstree->size;
+    }
+
+    return pBstree->size;
+}
+
 /* 获取二叉搜索树的高度 */
-int binarySearchTreeGetHeight(binarySearchTree * pBstree, int * height)
+int binarySearchTreeGetHeight(binarySearchTree * pBstree, int * pHeight)
 {
     if(!pBstree)
     {
         return NULL_PTR;
     }
     /* 指向最后的结点位置 */
-    BSTreeNode * last = NULL;
-    int count = 1;
+    /* 赋空值，避免野指针 */
+    doubleLinkListQueue * queue = NULL;
 
-    binarySearchTreeLevelOrderTravel(pBstree, &last);
+    doubleLinkListQueueInit(&queue);
 
-    while(last->parent)
+    /* 根节点入队 */
+    doubleLinkListQueuePush(queue, pBstree->root);
+    
+    BSTreeNode * val = NULL;
+    int levelSize = 1;
+    int height = 0;
+    while(!doubleLinkListQueueIsEmpty(queue))
     {
-        last = last->parent;
-        count++;
+        /* 读取对头元素 */
+        doubleLinkListQueueTop(queue, (void **)&val);
+
+        /* 出队，队头元素变化，取出的是结点 */
+        doubleLinkListQueuePop(queue);
+
+        levelSize--;
+
+        /* 左右子树入队 */
+        if(val->left)
+        {
+            doubleLinkListQueuePush(queue, val->left);
+        }
+        if(val->right)
+        {
+            doubleLinkListQueuePush(queue, val->right);
+        }
+
+        if(levelSize == 0)
+        {
+            height++;
+            doubleLinkListQueueGetSize(queue, &levelSize);
+        }
     }
 
-    *height = count;
+    *pHeight = height;
+
+    /* 释放队列 */
+    doubleLinkListQueueDestroy(queue);
 
     return 0;
 }
@@ -546,3 +589,12 @@ int binarySearchTreeDestroy(binarySearchTree * pBstree)
 
     return ON_SUCCESS;
 }
+
+
+/* 判断搜索二叉树是否是完全二叉树 */
+int binarySearchTreeIsCompelete(binarySearchTree * pBstree)
+{
+    
+    return 0;
+}
+
