@@ -233,7 +233,7 @@ static BSTreeNode * baseAppointValGetBSTreeNode(binarySearchTree * pBstree, ELEL
     int cmp = 0;
     while(travelNode)
     {
-        cmp = pBstree->compareFunc(travelNode->data, val);
+        cmp = pBstree->compareFunc(val, travelNode->data);
         if(cmp < 0)
         {
             travelNode = travelNode->left;
@@ -255,6 +255,10 @@ static BSTreeNode * baseAppointValGetBSTreeNode(binarySearchTree * pBstree, ELEL
 /* 二叉搜索树是否包含指定元素 */
 int binarySearchTreeIsContainAppointVal(binarySearchTree * pBstree, ELELMENTTYPE val)
 {
+    if(!pBstree)
+    {
+        return NULL_PTR;
+    }
     return baseAppointValGetBSTreeNode(pBstree, val) == NULL ? 0 : 1;
 }
 
@@ -320,7 +324,7 @@ int binarySearchTreePostOrderTravel(binarySearchTree * pBstree)
 }
 
 /* 二叉搜索树的层序遍历并获取最后对应结点 */
-int binarySearchTreeLevelOrderTravel(binarySearchTree * pBstree, BSTreeNode ** node)
+int binarySearchTreeLevelOrderTravel(binarySearchTree * pBstree)
 {
     if(!pBstree)
     {
@@ -355,8 +359,6 @@ int binarySearchTreeLevelOrderTravel(binarySearchTree * pBstree, BSTreeNode ** n
             doubleLinkListQueuePush(queue, val->right);
         }
     }
-
-    *node = val;
 
     /* 释放队列 */
     doubleLinkListQueueDestroy(queue);

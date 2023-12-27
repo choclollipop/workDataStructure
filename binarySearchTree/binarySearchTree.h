@@ -43,7 +43,7 @@ int binarySearchTreeInOrderTravel(binarySearchTree * pBstree);
 int binarySearchTreePostOrderTravel(binarySearchTree * pBstree);
 
 /* 二叉搜索树的层序遍历 */
-int binarySearchTreeLevelOrderTravel(binarySearchTree * pBstree, BSTreeNode ** node);
+int binarySearchTreeLevelOrderTravel(binarySearchTree * pBstree);
 
 /* 获取二叉搜索树的结点个数 */
 int binarySearchTreeGetNodeSize(binarySearchTree * pBstree, int * pSize);

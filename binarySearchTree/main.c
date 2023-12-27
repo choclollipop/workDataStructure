@@ -16,7 +16,18 @@ int compare(void * val1, void * val2)
     int tmp1 = *(int *)val1;
     int tmp2 = *(int *)val2;
 
-    return tmp1 - tmp2;
+    if(tmp1 - tmp2 < 0)
+    {
+        return -1;
+    }
+    else if(tmp1 -tmp2 > 0)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
 }
 
 int main()
@@ -42,6 +53,23 @@ int main()
     int height = 0;
     binarySearchTreeGetHeight(tree, &height);
     printf("height : %d\n", height);
+
+    /* 测试前中后序打印 */
+    binarySearchTreeInOrderTravel(tree);
+    printf("\n");
+
+    binarySearchTreePostOrderTravel(tree);
+    printf("\n");
+
+    binarySearchTreePreOrderTravel(tree);
+    printf("\n");
+
+    /* 测试层序遍历 */
+    binarySearchTreeLevelOrderTravel(tree);
+
+    /* 测试是否包含指定元素 */
+    int res = binarySearchTreeIsContainAppointVal(tree, (void *)&buffer[1]);
+    printf("res : %d\n", res);
 
     return 0;
 }
