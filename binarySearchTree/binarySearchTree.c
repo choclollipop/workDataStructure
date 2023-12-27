@@ -100,12 +100,29 @@ static int bstreeNodePreDecessor(BSTreeNode * node)
     }
     return travelNode->parent;
 
-    return NULL;
 }
 
-/* 获取当前结点的后继节点 todo...*/
+/* 获取当前结点的后继节点 */
 static int bstreeNodeSuccessor(BSTreeNode * node)
 {
+    BSTreeNode * travelNode = node;
+    /* 指定结点右子树不为空 */
+    if(travelNode->right)
+    {
+        travelNode = travelNode->right;
+        while(travelNode->left)
+        {
+            travelNode = travelNode->left;
+        }
+        return travelNode;
+    }
+
+    /* 指定结点没有右子树 */
+    while(travelNode->parent != NULL && travelNode == travelNode->parent->right)
+    {
+        travelNode = travelNode->parent;
+    }
+    return travelNode->parent;
 
 }
 
