@@ -474,11 +474,6 @@ static int binarySearchTreeDeleteNode(binarySearchTree * pBstree, BSTreeNode * n
             pBstree->root = child;
         }
     }
-    else
-    {
-        /* 度为0 */
-        delNode->parent = NULL;
-    } 
 
     /* 释放结点 */
     if(delNode)
