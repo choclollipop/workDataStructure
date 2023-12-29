@@ -58,6 +58,8 @@ static int AVLTreeCurrentNodeIsRight(AVLTreeNode * node);
 static int AVLTreeCurrentNodePotateRight(BalanceBinarySearchTree * pBstree, AVLTreeNode * node);
 /* 左旋 */
 static int AVLTreeCurrentNodePotateLeft(BalanceBinarySearchTree * pBstree, AVLTreeNode * node);
+/* 左右旋的公共代码 */
+static int AVLTreeNodePotate(BalanceBinarySearchTree * pBstree, AVLTreeNode * node, AVLTreeNode * parent, AVLTreeNode * child);
 
 
 
@@ -225,14 +227,9 @@ static AVLTreeNode * AVLTreeNodeGetChildTaller(AVLTreeNode * node)
     }
 }
 
-/* 右旋 */
-static int AVLTreeCurrentNodePotateRight(BalanceBinarySearchTree * pBstree, AVLTreeNode * node)
+/* 左右旋的公共代码 */
+static int AVLTreeNodePotate(BalanceBinarySearchTree * pBstree, AVLTreeNode * node, AVLTreeNode * parent, AVLTreeNode * child)
 {
-    AVLTreeNode * parent = node->left;
-    AVLTreeNode * child = parent->right;
-
-    node->left = child;
-    parent->right = node;
     parent->parent = node->parent;
 
     /* 开始移动父指针 */
@@ -258,6 +255,20 @@ static int AVLTreeCurrentNodePotateRight(BalanceBinarySearchTree * pBstree, AVLT
     /* 更新高度:先更新旋转后较低的结点 */
     AVLTreeNodeUpdateHeight(node);
     AVLTreeNodeUpdateHeight(parent);
+    
+    return ON_SUCCESS;
+}
+
+/* 右旋 */
+static int AVLTreeCurrentNodePotateRight(BalanceBinarySearchTree * pBstree, AVLTreeNode * node)
+{
+    AVLTreeNode * parent = node->left;
+    AVLTreeNode * child = parent->right;
+
+    node->left = child;
+    parent->right = node;
+    
+    AVLTreeNodePotate(pBstree, node, parent, child);
 
     return ON_SUCCESS;
 }
@@ -270,33 +281,10 @@ static int AVLTreeCurrentNodePotateLeft(BalanceBinarySearchTree * pBstree, AVLTr
 
     node->right = child;
     parent->left = node;
-    parent->parent = node->parent;
+    
+    AVLTreeNodePotate(pBstree, node, parent, child);
 
-    /* 更改父指针 */
-    if(AVLTreeCurrentNodeIsLeft(node))
-    {
-        node->parent->left = parent;
-    }
-    else if (AVLTreeCurrentNodeIsRight(node))
-    {
-        node->parent->right = parent;
-    }
-    else
-    {
-        /* 根节点 */
-        pBstree->root = parent;
-    }
-
-    node->parent = parent;
-
-    if(child)
-    {
-        child->parent = node;
-    }
-
-    /* 更新结点 */
-    AVLTreeNodeUpdateHeight(node);
-    AVLTreeNodeUpdateHeight(parent);
+    return ON_SUCCESS;
 }
 
 /* AVL树调整结点的平衡 */
