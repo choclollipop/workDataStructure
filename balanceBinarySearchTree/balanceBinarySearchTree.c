@@ -265,7 +265,38 @@ static int AVLTreeCurrentNodePotateRight(BalanceBinarySearchTree * pBstree, AVLT
 /* 左旋 */
 static int AVLTreeCurrentNodePotateLeft(BalanceBinarySearchTree * pBstree, AVLTreeNode * node)
 {
+    AVLTreeNode * parent = node->right;
+    AVLTreeNode * child = parent->left;
 
+    node->right = child;
+    parent->left = node;
+    parent->parent = node->parent;
+
+    /* 更改父指针 */
+    if(AVLTreeCurrentNodeIsLeft(node))
+    {
+        node->parent->left = parent;
+    }
+    else if (AVLTreeCurrentNodeIsRight(node))
+    {
+        node->parent->right = parent;
+    }
+    else
+    {
+        /* 根节点 */
+        pBstree->root = parent;
+    }
+
+    node->parent = parent;
+
+    if(child)
+    {
+        child->parent = node;
+    }
+
+    /* 更新结点 */
+    AVLTreeNodeUpdateHeight(node);
+    AVLTreeNodeUpdateHeight(parent);
 }
 
 /* AVL树调整结点的平衡 */
