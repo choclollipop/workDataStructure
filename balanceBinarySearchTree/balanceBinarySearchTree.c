@@ -47,9 +47,13 @@ static int AVLTreeNodeUpdateHeight(AVLTreeNode * node);
 /* 计算左右子树的最大值 */
 static int AVLTreeMax(AVLTreeNode * node);
 /* AVL树调整结点的平衡 */
-static int AVLTreeAdjustBalance(BalanceBinarySearchTree * pBstree, AVLTreeNode * node);
+static int AVLTreeNodeAdjustBalance(BalanceBinarySearchTree * pBstree, AVLTreeNode * node);
 /* 判断调整结点左右子树谁更高并返回更高的结点 */
 static AVLTreeNode * AVLTreeNodeGetChildTaller(AVLTreeNode * node);
+/* 当前结点是父节点的左子树 */
+static int AVLTreeCurrentNodeIsLeft(AVLTreeNode * node);
+/* 当前结点是父节点的是右子树 */
+static int AVLTreeCurrentNodeIsRight(AVLTreeNode * node);
 
 
 
@@ -175,6 +179,18 @@ int balanceBinarySearchTreeInit(BalanceBinarySearchTree ** pBstree, int (*compar
     return ON_SUCCESS;
 }
 
+/* 当前结点是父节点的左子树还是右子树 */
+static int AVLTreeCurrentNodeIsLeft(AVLTreeNode * node)
+{
+    return (node->parent != NULL) && node == node->parent->left;
+}
+
+/* 当前结点是父节点的是右子树 */
+static int AVLTreeCurrentNodeIsRight(AVLTreeNode * node)
+{
+    return (node->parent != NULL) && node == node->parent->right;
+}
+
 /* 判断调整结点左右子树谁更高并返回更高的结点 */
 static AVLTreeNode * AVLTreeNodeGetChildTaller(AVLTreeNode * node)
 {
@@ -194,7 +210,7 @@ static AVLTreeNode * AVLTreeNodeGetChildTaller(AVLTreeNode * node)
     }
     else
     {
-        if(node->parent != NULL && node == node->parent->left)
+        if(AVLTreeCurrentNodeIsLeft(node))
         {
             return node->left;
         }
@@ -212,9 +228,9 @@ static int AVLTreeNodeAdjustBalance(BalanceBinarySearchTree * pBstree, AVLTreeNo
     AVLTreeNode * parent = AVLTreeNodeGetChildTaller(node);
     AVLTreeNode * child = AVLTreeNodeGetChildTaller(parent);
 
-    if(parent == node->left)
+    if(AVLTreeCurrentNodeIsLeft(parent))
     {
-        if(child == parent->left)
+        if(AVLTreeCurrentNodeIsLeft(child))
         {
             /* LL */
         }
@@ -225,7 +241,7 @@ static int AVLTreeNodeAdjustBalance(BalanceBinarySearchTree * pBstree, AVLTreeNo
     }
     else
     {
-        if(child == parent->left)
+        if(AVLTreeCurrentNodeIsLeft(child))
         {
             /* RL */
         }
