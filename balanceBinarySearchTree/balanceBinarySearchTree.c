@@ -535,51 +535,20 @@ int balanceBinarySearchTreeGetHeight(BalanceBinarySearchTree * pBstree, int * pH
     {
         return NULL_PTR;
     }
-    /* 指向最后的结点位置 */
-    /* 赋空值，避免野指针 */
-    doubleLinkListQueue * queue = NULL;
 
-    doubleLinkListQueueInit(&queue);
-
-    /* 根节点入队 */
-    doubleLinkListQueuePush(queue, pBstree->root);
-    
-    AVLTreeNode * val = NULL;
-    int levelSize = 1;
     int height = 0;
-    while(!doubleLinkListQueueIsEmpty(queue))
+
+    /* 空树 */
+    if(pBstree->size == 0)
     {
-        /* 读取对头元素 */
-        doubleLinkListQueueTop(queue, (void **)&val);
-
-        /* 出队，队头元素变化，取出的是结点 */
-        doubleLinkListQueuePop(queue);
-
-        levelSize--;
-
-        /* 左右子树入队 */
-        if(val->left)
-        {
-            doubleLinkListQueuePush(queue, val->left);
-        }
-        if(val->right)
-        {
-            doubleLinkListQueuePush(queue, val->right);
-        }
-
-        if(levelSize == 0)
-        {
-            height++;
-            doubleLinkListQueueGetSize(queue, &levelSize);
-        }
+        *pHeight = height;
+        return height;
     }
 
+    height = pBstree->root->height;
     *pHeight = height;
 
-    /* 释放队列 */
-    doubleLinkListQueueDestroy(queue);
-
-    return 0;
+    return height;
 }
 
 /* 删除结点 */
