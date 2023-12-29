@@ -15,7 +15,8 @@ enum STATUS_CODE
 };
 
 /* 静态函数前置声明 */
-static AVLTreeNode * createNewBSTreeNode(ELELMENTTYPE val, AVLTreeNode * parent);
+/* 创建结点 */
+static AVLTreeNode * createNewAVLTreeNode(ELELMENTTYPE val, AVLTreeNode * parent);
 /* 根据指定的值获取二叉搜索树的结点 */
 static AVLTreeNode * baseAppointValGetBSTreeNode(BalanceBinarySearchTree * pBstree, ELELMENTTYPE val);
 /* 判断二叉搜索树度为0 */
@@ -176,7 +177,7 @@ int balanceBinarySearchTreeInit(BalanceBinarySearchTree ** pBstree, int (*compar
     bstree->printFunc = printFunc;
 
     /* 给根节点分配空间 */
-    bstree->root = createNewBSTreeNode(0, NULL);
+    bstree->root = createNewAVLTreeNode(0, NULL);
     if(!bstree->root)
     {
         return MALLOC_ERROR;
@@ -321,7 +322,7 @@ static int AVLTreeNodeAdjustBalance(BalanceBinarySearchTree * pBstree, AVLTreeNo
         else
         {
             /* RR - 左旋 */
-            AVLTreeCurrentNodePotateLeft(parent, node);
+            AVLTreeCurrentNodePotateLeft(pBstree, node);
         }
     }
 
@@ -344,7 +345,7 @@ static int insertNodeAfter(BalanceBinarySearchTree * pBstree, AVLTreeNode * node
         else
         {
             /* 不平衡开始旋转调整 */
-            AVLTreeAdjustBalance(pBstree, node);
+            AVLTreeNodeAdjustBalance(pBstree, node);
 
             break;
         }
@@ -410,7 +411,7 @@ int balanceBinarySearchTreeInsert(BalanceBinarySearchTree * pBstree, ELELMENTTYP
         travelNode->data = val;
         pBstree->size++;
 
-        insertNodeAfter(pBstree->root, pBstree->root);
+        insertNodeAfter(pBstree, pBstree->root);
 
         return ON_SUCCESS;
     }
@@ -440,7 +441,7 @@ int balanceBinarySearchTreeInsert(BalanceBinarySearchTree * pBstree, ELELMENTTYP
         }
     }
 
-    AVLTreeNode * newNode = createNewBSTreeNode(val, parentNode);
+    AVLTreeNode * newNode = createNewAVLTreeNode(val, parentNode);
     if(!newNode)
     {
         return MALLOC_ERROR;
@@ -658,7 +659,7 @@ static int removeNodeAfter(BalanceBinarySearchTree * pBstree, AVLTreeNode * node
         else
         {
             /* 不平衡开始旋转调整 */
-            AVLTreeAdjustBalance(pBstree, node);
+            AVLTreeNodeAdjustBalance(pBstree, node);
         }
     }
 
