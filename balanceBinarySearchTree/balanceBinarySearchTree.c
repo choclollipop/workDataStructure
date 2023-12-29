@@ -48,6 +48,8 @@ static int AVLTreeNodeUpdateHeight(AVLTreeNode * node);
 static int AVLTreeMax(AVLTreeNode * node);
 /* AVL树调整结点的平衡 */
 static int AVLTreeAdjustBalance(BalanceBinarySearchTree * pBstree, AVLTreeNode * node);
+/* 判断调整结点左右子树谁更高并返回更高的结点 */
+static AVLTreeNode * AVLTreeNodeGetChildTaller(AVLTreeNode * node);
 
 
 
@@ -173,10 +175,65 @@ int balanceBinarySearchTreeInit(BalanceBinarySearchTree ** pBstree, int (*compar
     return ON_SUCCESS;
 }
 
-/* AVL树调整结点的平衡 */
-static int AVLTreeAdjustBalance(BalanceBinarySearchTree * pBstree, AVLTreeNode * node)
+/* 判断调整结点左右子树谁更高并返回更高的结点 */
+static AVLTreeNode * AVLTreeNodeGetChildTaller(AVLTreeNode * node)
 {
-    
+    /* 左子树高度 */
+    int leftHeight = node->left == NULL ? 0 : node->left->height;
+
+    /* 右子树高度 */
+    int rightHeight = node->right == NULL ? 0 : node->right->height;
+
+    if(leftHeight > rightHeight)
+    {
+        return node->left;
+    }
+    else if(leftHeight < rightHeight)
+    {
+        return node->right;
+    }
+    else
+    {
+        if(node->parent != NULL && node == node->parent->left)
+        {
+            return node->left;
+        }
+        else
+        {
+            return node->right;
+        }
+    }
+}
+
+/* AVL树调整结点的平衡 */
+static int AVLTreeNodeAdjustBalance(BalanceBinarySearchTree * pBstree, AVLTreeNode * node)
+{
+    /* LL型、LR、RL、RR */
+    AVLTreeNode * parent = AVLTreeNodeGetChildTaller(node);
+    AVLTreeNode * child = AVLTreeNodeGetChildTaller(parent);
+
+    if(parent == node->left)
+    {
+        if(child == parent->left)
+        {
+            /* LL */
+        }
+        else
+        {
+            /* LR */
+        }
+    }
+    else
+    {
+        if(child == parent->left)
+        {
+            /* RL */
+        }
+        else
+        {
+            /* RR */
+        }
+    }
 }
 
 /* 添加结点后的操作 */
