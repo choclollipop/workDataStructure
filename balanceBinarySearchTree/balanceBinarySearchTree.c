@@ -38,6 +38,8 @@ static AVLTreeNode * bstreeNodeSuccessor(AVLTreeNode * node);
 static int balanceBinarySearchTreeDeleteNode(BalanceBinarySearchTree * pBstree, AVLTreeNode * node);
 /* 添加结点后的操作 */
 static int insertNodeAfter(BalanceBinarySearchTree * pBstree, AVLTreeNode * node);
+/* 删除结点之后的操作 */
+static int removeNodeAfter(BalanceBinarySearchTree * pBstree, AVLTreeNode * node);
 /* 计算结点的平衡因子 */
 static int AVLTreeNodeBalanceFactor(AVLTreeNode * node);
 /* 判断结点是否平衡 */
@@ -304,6 +306,8 @@ static int AVLTreeNodeAdjustBalance(BalanceBinarySearchTree * pBstree, AVLTreeNo
         else
         {
             /* LR */
+            AVLTreeCurrentNodePotateLeft(pBstree, parent);
+            AVLTreeCurrentNodePotateRight(pBstree, node);
         }
     }
     else
@@ -311,6 +315,8 @@ static int AVLTreeNodeAdjustBalance(BalanceBinarySearchTree * pBstree, AVLTreeNo
         if(AVLTreeCurrentNodeIsLeft(child))
         {
             /* RL */
+            AVLTreeCurrentNodePotateRight(pBstree, parent);
+            AVLTreeCurrentNodePotateLeft(pBstree, node);
         }
         else
         {
@@ -318,6 +324,8 @@ static int AVLTreeNodeAdjustBalance(BalanceBinarySearchTree * pBstree, AVLTreeNo
             AVLTreeCurrentNodePotateLeft(parent, node);
         }
     }
+
+    return ON_SUCCESS;
 }
 
 /* 添加结点后的操作 */
@@ -635,6 +643,28 @@ int balanceBinarySearchTreeGetHeight(BalanceBinarySearchTree * pBstree, int * pH
     return height;
 }
 
+/* 删除结点之后的操作 */
+/* node是要删除的结点 */
+static int removeNodeAfter(BalanceBinarySearchTree * pBstree, AVLTreeNode * node)
+{
+    /* 从父结点开始调整 */
+    while(node = node->parent)
+    {
+        if(AVLTreeNodeIsBalanced(node))
+        {
+            /* 更新结点高度 */
+            AVLTreeNodeUpdateHeight(node);
+        }
+        else
+        {
+            /* 不平衡开始旋转调整 */
+            AVLTreeAdjustBalance(pBstree, node);
+        }
+    }
+
+    return ON_SUCCESS;
+}
+
 /* 删除结点 */
 static int balanceBinarySearchTreeDeleteNode(BalanceBinarySearchTree * pBstree, AVLTreeNode * node)
 {
@@ -718,6 +748,19 @@ static int balanceBinarySearchTreeDeleteNode(BalanceBinarySearchTree * pBstree, 
             pBstree->root = child;
         }
     }
+    else
+    {
+        if(delNode == delNode->parent->left)
+        {
+            delNode->parent->left = NULL;
+        }
+        else if (delNode == delNode->parent->right)
+        {
+            delNode->parent->right = NULL;
+        }
+    }
+
+    removeNodeAfter(pBstree, delNode);
 
     /* 释放结点 */
     if(delNode)
