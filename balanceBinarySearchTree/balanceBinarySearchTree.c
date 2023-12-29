@@ -54,6 +54,10 @@ static AVLTreeNode * AVLTreeNodeGetChildTaller(AVLTreeNode * node);
 static int AVLTreeCurrentNodeIsLeft(AVLTreeNode * node);
 /* 当前结点是父节点的是右子树 */
 static int AVLTreeCurrentNodeIsRight(AVLTreeNode * node);
+/* 右旋 */
+static int AVLTreeCurrentNodePotateRight(BalanceBinarySearchTree * pBstree, AVLTreeNode * node);
+/* 左旋 */
+static int AVLTreeCurrentNodePotateLeft(BalanceBinarySearchTree * pBstree, AVLTreeNode * node);
 
 
 
@@ -221,6 +225,49 @@ static AVLTreeNode * AVLTreeNodeGetChildTaller(AVLTreeNode * node)
     }
 }
 
+/* 右旋 */
+static int AVLTreeCurrentNodePotateRight(BalanceBinarySearchTree * pBstree, AVLTreeNode * node)
+{
+    AVLTreeNode * parent = node->left;
+    AVLTreeNode * child = parent->right;
+
+    node->left = child;
+    parent->right = node;
+    parent->parent = node->parent;
+
+    /* 开始移动父指针 */
+    if(AVLTreeCurrentNodeIsLeft(node))
+    {
+        node->parent->left = parent;
+    }
+    else if(AVLTreeCurrentNodeIsRight(node))
+    {
+        node->parent->right = parent;
+    }
+    else
+    {
+        /* node是根节点 */
+        pBstree->root = parent;
+    }
+    node->parent = parent;
+    if(child)
+    {
+        child->parent = node;
+    }
+
+    /* 更新高度:先更新旋转后较低的结点 */
+    AVLTreeNodeUpdateHeight(node);
+    AVLTreeNodeUpdateHeight(parent);
+
+    return ON_SUCCESS;
+}
+
+/* 左旋 */
+static int AVLTreeCurrentNodePotateLeft(BalanceBinarySearchTree * pBstree, AVLTreeNode * node)
+{
+
+}
+
 /* AVL树调整结点的平衡 */
 static int AVLTreeNodeAdjustBalance(BalanceBinarySearchTree * pBstree, AVLTreeNode * node)
 {
@@ -232,7 +279,8 @@ static int AVLTreeNodeAdjustBalance(BalanceBinarySearchTree * pBstree, AVLTreeNo
     {
         if(AVLTreeCurrentNodeIsLeft(child))
         {
-            /* LL */
+            /* LL - 右旋 */
+            AVLTreeCurrentNodePotateRight(pBstree, node);
         }
         else
         {
@@ -247,7 +295,8 @@ static int AVLTreeNodeAdjustBalance(BalanceBinarySearchTree * pBstree, AVLTreeNo
         }
         else
         {
-            /* RR */
+            /* RR - 左旋 */
+            AVLTreeCurrentNodePotateLeft(parent, node);
         }
     }
 }
