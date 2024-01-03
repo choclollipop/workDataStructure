@@ -15,9 +15,13 @@ int isValied(dynamicArrayStack *stack, char * array, int len)
             /* 入栈 */
             dynamicArrayStackPush(stack, (void *)&array[idx]);
         }
-        idx++;
-        if (array[idx] == ')' || array[idx] == ']' || array[idx] == '}')
+        else
         {
+            if(dynamicArrayStackIsEmpty(stack))
+            {
+                printf("false\n");
+                return 0;
+            }
             dynamicArrayStackTop(stack, (void **)&val);
             /* 找到右括号，此时栈顶的元素必须是对应的左括号 */
             if (array[idx] == ')')
@@ -51,10 +55,9 @@ int isValied(dynamicArrayStack *stack, char * array, int len)
                 return 0;
             }
 
-            dynamicArrayStackPop(stack);
-            
+            dynamicArrayStackPop(stack);  
         }
-        
+        idx++;
     }
 
     /* 若字符串符合要求此时栈内所有对应的左括号应已经全部出栈并且已经遍历完全数组 */
@@ -74,7 +77,7 @@ int main()
 {
     /* 怎么解决套壳问题 */
     dynamicArrayStack stack;
-    char array[] = "{}()()}";
+    char array[] = "}{{}()()}";
     int len = sizeof(array) / sizeof(array[0]) - 1;
     
 
