@@ -4,76 +4,76 @@
 
 #define BUFFER_SIZE 3
 
-typedef struct stuInfo
+int printFunc(void * val)
 {
-    int age;
-    char sex;
-}stuInfo;
+    int ret = 0;
 
-int printfStruct(void *arg)
-{
-    stuInfo *info = (stuInfo*) arg;
-
-    printf("age:%d,\t sex:%c\n", info->age, info->sex);
+    int * tmp = (int *)val;
+    printf("data : %d\n", *tmp);
+    
+    return 0;
 }
 
 int main()
 {
-    DoubleLinkList * list = NULL;
+    DoubleLinkList * list1 = NULL;
+    DoubleLinkList * list2 = NULL;
+
+    DoubleLinkList * result = NULL;
+
+    int buffer1[BUFFER_SIZE] = {1, 2, 4};
+    int buffer2[BUFFER_SIZE] = {1, 3, 4};
     
     /* 测试链表初始化 */
-    DoubleLinkListInit(&list);
-    printf("list.len : %d\n", list->len);
+    DoubleLinkListInit(&list1);
+    DoubleLinkListInit(&list2);
+    DoubleLinkListInit(&result);
 
-#if 0
-    /* 测试头插 */
-    for(int idx = 0; idx < BUFFER_SIZE; idx++)
+
+    /* 尾插 */
+    for (int idx = 0; idx < BUFFER_SIZE; idx++)
     {
-        DoubleLinkListHeadInsert(list, idx);
+        DoubleLinkListTailInsert(list1, (void *)&buffer1[idx]);
+    }
+    for (int idx = 0; idx < BUFFER_SIZE; idx++)
+    {
+        DoubleLinkListTailInsert(list2, (void *)&buffer2[idx]);
     }
 
-    /* 获取链表长度 */
-    int len = 0;
-    DoubleLinkListGetLen(list, &len);
-    printf("len : %d\n", len);
+    /* 遍历打印链表 */
+    DoubleLinkListForeach(list1, printFunc);
+    printf("\n");
+    DoubleLinkListForeach(list2, printFunc);
+    printf("\n");
 
-    /* 测试链表遍历 */
-    DoubleLinkListForeach(list);
-#endif
-
-    stuInfo stu1,stu2,stu3;
-    memset(&stu1, 0, sizeof(stu1));
-    memset(&stu2, 0, sizeof(stu2));
-    memset(&stu3, 0, sizeof(stu3));
-
-    stu1.age = 10;
-    stu1.sex = 'm';
-
-    stu2.age = 20;
-    stu2.sex = 'f';
-
-    stu3.age = 30;
-    stu3.sex = 'm';
-
-    stuInfo buffer[BUFFER_SIZE] = {stu1, stu2, stu3};
-
-    for(int idx = 0; idx < BUFFER_SIZE; idx++)
+    int * val1 = NULL;
+    int * val2 = NULL;
+    int tmp1= 0;
+    int tmp2 = 0;
+    for (int idx = 1; idx <= list1->len; idx++)
     {
-        DoubleLinkListHeadInsert(list, (void*)&buffer[idx]);
+        DoubleLinkListGetAppointPosVal(list1, idx, (void **)&val1);
+        /* 先将链表1的所有结点插入到最终链表中 */
+        DoubleLinkListTailInsert(result, (void *)val1);
     }
 
-    /* 获取链表长度 */
-    int len = 0;
-    DoubleLinkListGetLen(list, &len);
-    printf("len : %d\n", len);
-
-#if 1
-    /* 测试链表遍历 */
-    DoubleLinkListReverseForeach(list, printfStruct);
-#else
-    DoubleLinkListForeach(list, printfStruct);
-
-#endif
-
+    int pos = 1;
+    int idx = 1;
+    while (pos <= list2->len)
+    {
+        DoubleLinkListGetAppointPosVal(result, idx, (void **)&val1);
+        tmp1 = *val1;
+        DoubleLinkListGetAppointPosVal(list2, pos, (void **)&val2);
+        tmp2 = *val2;
+        if(tmp1 <= tmp2)
+        {
+            DoubleLinkListAppointPosInsert(result, idx, (void *)val2);
+        }
+        pos++;
+        idx += 2;
+    }
+    
+    DoubleLinkListForeach(result, printFunc);
+    
     return 0;
 }

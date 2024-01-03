@@ -331,3 +331,27 @@ int DoubleLinkListReverseForeach(DoubleLinkList * pList, int (*printFunc)(ELEMEN
     return ON_SUCCESS;
 }
 
+/* 获取链表指定位置的元素 */
+int DoubleLinkListGetAppointPosVal(DoubleLinkList * pList, int pos, ELEMENTTYPE * val)
+{
+    if(!pList)
+    {
+        return NULL_PTR;
+    }
+
+    if(pos < 0 || pos > pList->len)
+    {
+        return INVALID_ACCESS;
+    }
+
+    /* 从头指针开始遍历 */
+    DoubleLinkNode * travelNode = pList->head;
+    while(pos--)
+    {
+        travelNode = travelNode->next;
+    }
+
+    *val = travelNode->data;
+
+    return ON_SUCCESS;
+}
