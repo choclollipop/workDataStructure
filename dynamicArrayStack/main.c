@@ -49,7 +49,7 @@ int isValied(dynamicArrayStack *stack, char * array, int len)
                 }
             }
             /* 若此时栈为空的情况下，仍然有右括号则，不符合要求 */
-            if ((array[idx - 1] == ')' || array[idx - 1] == ']' || array[idx - 1] == '}') && dynamicArrayStackIsEmpty(stack))
+            if (idx <= len - 1 && dynamicArrayStackIsEmpty(stack))
             {
                 printf("false\n");
                 return 0;
@@ -77,7 +77,7 @@ int main()
 {
     /* 怎么解决套壳问题 */
     dynamicArrayStack stack;
-    char array[] = "}{{}()()}";
+    char array[] = "{{}()()}";
     int len = sizeof(array) / sizeof(array[0]) - 1;
     
 
