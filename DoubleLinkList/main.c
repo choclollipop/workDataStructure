@@ -14,6 +14,59 @@ int printFunc(void * val)
     return 0;
 }
 
+int compare(void * val1, void * val2)
+{
+    int * tmp1 = (int *)val1;
+    int * tmp2 = (int *)val2;
+    if(*tmp1 <= *tmp2)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+int mergeList(DoubleLinkList * list1, DoubleLinkList * list2, DoubleLinkList * result)
+{
+    int * val1 = NULL;
+    int * val2 = NULL;
+    int one = 1;
+    int two = 1;
+    int pos = 0;
+    while(result->len < list1->len + list2->len)
+    {
+        if(one <= list1->len || two <= list2->len)
+        {
+            if(one <= list1->len)
+            {
+                DoubleLinkListGetAppointPosVal(list1, one, (void **)&val1);
+            }
+            if(two <= list2->len)
+            {
+                DoubleLinkListGetAppointPosVal(list2, two, (void **)&val2);
+            }     
+        }
+        
+
+        if (compare(val1, val2) && one <= list1->len)
+        {
+            DoubleLinkListAppointPosInsert(result, pos, (void *)val1);
+            pos++;
+            one++;
+        }
+        else
+        {
+            DoubleLinkListAppointPosInsert(result, pos, (void *)val2);
+            pos++;
+            two++;
+        }
+        
+    }
+
+}
+
 int main()
 {
     DoubleLinkList * list1 = NULL;
@@ -21,57 +74,27 @@ int main()
 
     DoubleLinkList * result = NULL;
 
-    int buffer1[BUFFER_SIZE] = {1, 2, 4};
-    int buffer2[BUFFER_SIZE] = {1, 3, 4};
+    int buffer1[] = {1, 2, 4, 5};
+    int len1 = sizeof(buffer1) / sizeof(buffer1[0]);
+    int buffer2[] = {1, 3, 4, 7, 9};
+    int len2 = sizeof(buffer2) / sizeof(buffer2[0]);
     
     /* 测试链表初始化 */
     DoubleLinkListInit(&list1);
     DoubleLinkListInit(&list2);
     DoubleLinkListInit(&result);
-
-
+    
     /* 尾插 */
-    for (int idx = 0; idx < BUFFER_SIZE; idx++)
+    for (int idx = 0; idx < len1; idx++)
     {
         DoubleLinkListTailInsert(list1, (void *)&buffer1[idx]);
     }
-    for (int idx = 0; idx < BUFFER_SIZE; idx++)
+    for (int idx = 0; idx < len2; idx++)
     {
         DoubleLinkListTailInsert(list2, (void *)&buffer2[idx]);
     }
 
-    /* 遍历打印链表 */
-    DoubleLinkListForeach(list1, printFunc);
-    printf("\n");
-    DoubleLinkListForeach(list2, printFunc);
-    printf("\n");
-
-    int * val1 = NULL;
-    int * val2 = NULL;
-    int tmp1= 0;
-    int tmp2 = 0;
-    for (int idx = 1; idx <= list1->len; idx++)
-    {
-        DoubleLinkListGetAppointPosVal(list1, idx, (void **)&val1);
-        /* 先将链表1的所有结点插入到最终链表中 */
-        DoubleLinkListTailInsert(result, (void *)val1);
-    }
-
-    int pos = 1;
-    int idx = 1;
-    while (pos <= list2->len)
-    {
-        DoubleLinkListGetAppointPosVal(result, idx, (void **)&val1);
-        tmp1 = *val1;
-        DoubleLinkListGetAppointPosVal(list2, pos, (void **)&val2);
-        tmp2 = *val2;
-        if(tmp1 <= tmp2)
-        {
-            DoubleLinkListAppointPosInsert(result, idx, (void *)val2);
-        }
-        pos++;
-        idx += 2;
-    }
+    mergeList(list1, list2, result);
     
     DoubleLinkListForeach(result, printFunc);
     
